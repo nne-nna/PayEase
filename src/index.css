@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&display=swap');
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+  font-family: 'Archivo', sans-serif;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes progressBar {
+  from { width: 100%; }
+  to { width: 0%; }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.animate-progress-bar {
+  animation: progressBar 4s linear forwards;
+}
+
+/* Smooth theme transition */
+*, *::before, *::after {
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+}
+
+/* Exclude elements that shouldn't transition */
+button, a, input, select, textarea {
+  transition: background-color 0.3s ease, border-color 0.3s ease, 
+              color 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+/* Shepherd Tour Custom Styles */
+.shepherd-element {
+  border-radius: 16px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+}
+
+.shepherd-content {
+  border-radius: 16px !important;
+  overflow: hidden !important;
+}
+
+.shepherd-header {
+  background: linear-gradient(135deg, #16a34a, #15803d) !important;
+  padding: 8px 20px !important;
+  border-radius: 0 !important;
+}
+
+.shepherd-title {
+  color: white !important;
+  font-size: 16px !important;
+  font-weight: 700 !important;
+  font-family: 'Archivo', sans-serif !important;
+}
+
+.shepherd-cancel-icon {
+  color: rgba(255, 255, 255, 0.8) !important;
+}
+
+.shepherd-cancel-icon:hover {
+  color: white !important;
+}
+
+.shepherd-text {
+  padding: 20px !important;
+  font-size: 14px !important;
+  line-height: 1.6 !important;
+  font-family: 'Archivo', sans-serif !important;
+  color: #374151 !important;
+}
+
+.shepherd-footer {
+  padding: 12px 20px 16px !important;
+  border-top: 1px solid #f3f4f6 !important;
+  gap: 8px !important;
+  display: flex !important;
+  justify-content: flex-end !important;
+}
+
+.shepherd-button-primary {
+  background: #16a34a !important;
+  color: white !important;
+  border: none !important;
+  padding: 8px 20px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  font-family: 'Archivo', sans-serif !important;
+  transition: background 0.2s !important;
+}
+
+.shepherd-button-primary:hover {
+  background: #15803d !important;
+}
+
+.shepherd-button-secondary {
+  background: #f3f4f6 !important;
+  color: #6b7280 !important;
+  border: none !important;
+  padding: 8px 20px !important;
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  font-size: 13px !important;
+  cursor: pointer !important;
+  font-family: 'Archivo', sans-serif !important;
+  transition: background 0.2s !important;
+}
+
+.shepherd-button-secondary:hover {
+  background: #e5e7eb !important;
+  color: #374151 !important;
+}
+
+.shepherd-modal-overlay-container {
+  opacity: 0.6 !important;
+}
+
+.shepherd-modal-overlay-container {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  background: rgba(15, 23, 42, 0.5); /* slightly richer dark */
+  transition: all 0.3s ease;
+}
+
+/* Dark mode tour styles */
+.dark .shepherd-text {
+  color: #e5e7eb !important;
+  background: #111827 !important;
+}
+
+.dark .shepherd-element {
+  background: #111827 !important;
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.dark .shepherd-footer {
+  background: #111827 !important;
+  border-top-color: #1f2937 !important;
+}
+
+.dark .shepherd-button-secondary {
+  background: #1f2937 !important;
+  color: #9ca3af !important;
+}
+
+.dark .shepherd-button-secondary:hover {
+  background: #374151 !important;
+  color: #e5e7eb !important;
+}
