@@ -121,7 +121,7 @@ const SelectField = ({ label, options, ...props }) => (
 );
 
 const BillPayment = () => {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const toast = useToast();
 
   const [activeCategory, setActiveCategory] = useState(
@@ -152,6 +152,18 @@ const BillPayment = () => {
 
   useEffect(() => {
     fetchWalletBalance();
+
+    const paystackRef = searchParams.get("reference");
+    if (paystackRef) {
+      setActiveCategory("fund");
+      setFundingStatus("waiting");
+      setSearchParams((prev) => {
+        prev.delete("reference");
+        prev.delete("action");
+        return prev;
+      });
+      autoVerify(paystackRef);
+    }
   }, []);
 
   const fetchWalletBalance = async () => {
@@ -180,31 +192,47 @@ const BillPayment = () => {
     }
   };
 
-  const pollForPayment = (reference) => {
-    setFundingStatus("waiting");
-    let attempts = 0;
+  //   setFundingStatus("waiting");
+  //   let attempts = 0;
 
-    const interval = setInterval(async () => {
-      attempts++;
-      try {
-        await api.get(`/wallet/verify/${reference}`);
-        clearInterval(interval);
-        setFundingStatus("success");
-        toast.success("Wallet funded successfully! 🎉");
-        fetchWalletBalance();
-        setTimeout(() => {
-          setFundingStatus("idle");
-          setFundAmount("");
-        }, 3000);
-      } catch {
-        if (attempts === 60) {
-          toast.info("Still waiting for payment confirmation...");
-        }
-      }
-    }, 5000);
+  //   const interval = setInterval(async () => {
+  //     attempts++;
+  //     try {
+  //       await api.get(`/wallet/verify/${reference}`);
+  //       clearInterval(interval);
+  //       setFundingStatus("success");
+  //       toast.success("Wallet funded successfully! 🎉");
+  //       fetchWalletBalance();
+  //       setTimeout(() => {
+  //         setFundingStatus("idle");
+  //         setFundAmount("");
+  //       }, 3000);
+  //     } catch {
+  //       if (attempts === 60) {
+  //         toast.info("Still waiting for payment confirmation...");
+  //       }
+  //     }
+  //   }, 5000);
 
-    return interval;
-  };
+  //   return interval;
+  // };
+
+  // Auto-verify for Paystack redirect
+  const autoVerify = async (reference) => {
+    try {
+      await api.get(`/wallet/verify/${reference}`);
+      setFundingStatus("success");
+      toast.success("Wallet funded successfully! 🎉");
+      fetchWalletBalance();
+      setTimeout(() => {
+        setFundingStatus("idle");
+        setFundAmount("");
+      }, 3000);
+    } catch (err) {
+      toast.error("Failed to verify payment");
+      setFundingStatus("idle");
+    }
+  }
 
   // Fund wallet
   const handleFundWallet = async (e) => {
@@ -215,16 +243,10 @@ const BillPayment = () => {
     }
     setLoading(true);
     try {
-      const response = await api.post("/wallet/fund", {
-        amount: parseFloat(fundAmount),
-      });
-
-      window.open(response.data.authorizationUrl, "_blank");
-      toast.info(
-        "Complete your payment in the new tab. Your wallet will update automatically.",
-      );
-      setLoading(false);
-      pollForPayment(response.data.reference);
+      const response = await api.post("/wallet/fund", 
+        { amount: parseFloat(fundAmount) 
+        });
+        window.location.href = response.data.authorizationUrl;
     } catch (err) {
       toast.error(
         err.response?.data?.message || "Failed to initialize payment",

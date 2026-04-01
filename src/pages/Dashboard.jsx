@@ -70,7 +70,7 @@ const Dashboard = () => {
       const allTransactions = transactionsRes.data;
 
       setBalance(walletRes.data);
-      setTransactions(allTransactions.slice(0, 5));
+      setTransactions(allTransactions.slice(0, 3));
       generateChartData(allTransactions);
       calculateStats(allTransactions);
     } catch (err) {

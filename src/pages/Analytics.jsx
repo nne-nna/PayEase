@@ -184,11 +184,10 @@ const Analytics = () => {
           })}
         </div>
       </div>
-
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
         {/* Pie Chart */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 h-full flex flex-col">
           <h2 className="text-base font-semibold text-gray-800 dark:text-white mb-6">
             Spending by Category
           </h2>
@@ -198,24 +197,26 @@ const Analytics = () => {
             </div>
           ) : (
             <>
-              <ResponsiveContainer width="100%" height={220}>
-                <PieChart>
-                  <Pie
-                    data={spendingByCategory}
-                    cx="50%"
-                    cy="50%"
-                    innerRadius={60}
-                    outerRadius={90}
-                    paddingAngle={4}
-                    dataKey="value"
-                  >
-                    {spendingByCategory.map((entry) => (
-                      <Cell key={entry.type} fill={COLORS[entry.type]} />
-                    ))}
-                  </Pie>
-                  <Tooltip content={<CustomTooltip />} />
-                </PieChart>
-              </ResponsiveContainer>
+              <div className="flex-1 min-h-[280px]">
+                <ResponsiveContainer width="100%" height={220}>
+                  <PieChart>
+                    <Pie
+                      data={spendingByCategory}
+                      cx="50%"
+                      cy="50%"
+                      innerRadius={60}
+                      outerRadius={90}
+                      paddingAngle={4}
+                      dataKey="value"
+                    >
+                      {spendingByCategory.map((entry) => (
+                        <Cell key={entry.type} fill={COLORS[entry.type]} />
+                      ))}
+                    </Pie>
+                    <Tooltip content={<CustomTooltip />} />
+                  </PieChart>
+                </ResponsiveContainer>
+              </div>
 
               {/* Legend */}
               <div className="space-y-2 mt-4">
@@ -254,43 +255,85 @@ const Analytics = () => {
             </>
           )}
         </div>
-
         {/* Bar Chart */}
-        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
+        <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 h-full flex flex-col">
           <h2 className="text-base font-semibold text-gray-800 dark:text-white mb-6">
             Monthly Overview
           </h2>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={monthlyData()}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-              <XAxis
-                dataKey="month"
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis
-                tick={{ fontSize: 11, fill: "#9ca3af" }}
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(v) => `₦${(v / 1000).toFixed(0)}k`}
-              />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Bar
-                dataKey="funded"
-                name="Funded"
-                fill="#22c55e"
-                radius={[4, 4, 0, 0]}
-              />
-              <Bar
-                dataKey="spent"
-                name="Spent"
-                fill="#ef4444"
-                radius={[4, 4, 0, 0]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="flex-1 min-h-[280px]">
+            <ResponsiveContainer width="100%" height={280}>
+              <BarChart data={monthlyData()}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
+                <XAxis
+                  dataKey="month"
+                  tick={{ fontSize: 11, fill: "#9ca3af" }}
+                  axisLine={false}
+                  tickLine={false}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "#9ca3af" }}
+                  axisLine={false}
+                  tickLine={false}
+                  tickFormatter={(v) => `₦${(v / 1000).toFixed(0)}k`}
+                />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend />
+                <Bar
+                  dataKey="funded"
+                  name="Funded"
+                  fill="#22c55e"
+                  radius={[4, 4, 0, 0]}
+                />
+                <Bar
+                  dataKey="spent"
+                  name="Spent"
+                  fill="#ef4444"
+                  radius={[4, 4, 0, 0]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+          <div className="space-y-2 mt-4">
+            {monthlyData()
+              .slice(-1)
+              .map((m) => (
+                <div
+                  key="summary"
+                  className="flex items-center justify-between"
+                >
+                  
+                  <div className="flex items-center gap-2">
+                    
+                    <div className="w-3 h-3 rounded-full bg-green-500" />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Total Funded
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-800 dark:text-white">
+                    
+                    ₦{m.funded.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+            {monthlyData()
+              .slice(-1)
+              .map((m) => (
+                <div key="spent" className="flex items-center justify-between">
+                  
+                  <div className="flex items-center gap-2">
+                    
+                    <div className="w-3 h-3 rounded-full bg-red-500" />
+                    <span className="text-sm text-gray-600 dark:text-gray-400">
+                      Total Spent
+                    </span>
+                  </div>
+                  <span className="text-sm font-medium text-gray-800 dark:text-white">
+                    
+                    ₦{m.spent.toLocaleString()}
+                  </span>
+                </div>
+              ))}
+          </div>
         </div>
       </div>
 
