@@ -231,8 +231,15 @@ const BillPayment = () => {
     } catch (err) {
       toast.error("Failed to verify payment");
       setFundingStatus("idle");
+    } finally {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("paystack_ref");
+      url.searchParams.delete("trxref");
+      url.searchParams.delete("reference");
+      url.searchParams.delete("action");
+      window.history.replaceState({}, "", url);
     }
-  }
+  };
 
   // Fund wallet
   const handleFundWallet = async (e) => {
@@ -243,10 +250,10 @@ const BillPayment = () => {
     }
     setLoading(true);
     try {
-      const response = await api.post("/wallet/fund", 
-        { amount: parseFloat(fundAmount) 
-        });
-        window.location.href = response.data.authorizationUrl;
+      const response = await api.post("/wallet/fund", {
+        amount: parseFloat(fundAmount),
+      });
+      window.location.href = response.data.authorizationUrl;
     } catch (err) {
       toast.error(
         err.response?.data?.message || "Failed to initialize payment",
