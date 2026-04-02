@@ -3,11 +3,11 @@ import { ArrowDownLeft, ArrowUpRight, Phone, Tv, Wifi, Zap } from "lucide-react"
 export const TransactionRow = ({ transaction }) => {
   const getIcon = () => {
     switch (transaction.type) {
-      case 'WALLET_FUNDING': return { icon: ArrowDownLeft, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-900/20' }
-      case 'ELECTRICITY': return { icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-900/20' }
-      case 'AIRTIME': return { icon: Phone, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-900/20' }
-      case 'DATA': return { icon: Wifi, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-900/20' }
-      case 'CABLE_TV': return { icon: Tv, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-900/20' }
+      case 'WALLET_FUNDING': return { icon: ArrowDownLeft, color: 'text-green-500', bg: 'bg-green-50 dark:bg-green-950' }
+      case 'ELECTRICITY': return { icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-950' }
+      case 'AIRTIME': return { icon: Phone, color: 'text-blue-500', bg: 'bg-blue-50 dark:bg-blue-950' }
+      case 'DATA': return { icon: Wifi, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-950' }
+      case 'CABLE_TV': return { icon: Tv, color: 'text-red-500', bg: 'bg-red-50 dark:bg-red-950' }
       default: return { icon: ArrowUpRight, color: 'text-gray-500', bg: 'bg-gray-50 dark:bg-gray-800' }
     }
   }
@@ -25,15 +25,15 @@ export const TransactionRow = ({ transaction }) => {
 
   const getStatusColor = () => {
     switch (transaction.status) {
-      case 'SUCCESS': return 'text-green-600 bg-green-50 dark:bg-green-900/20 dark:text-green-400'
-      case 'PENDING': return 'text-yellow-600 bg-yellow-50 dark:bg-yellow-900/20 dark:text-yellow-400'
-      case 'FAILED': return 'text-red-600 bg-red-50 dark:bg-red-900/20 dark:text-red-400'
+      case 'SUCCESS': return 'text-green-600 bg-green-50 dark:bg-green-950 dark:text-green-400'
+      case 'PENDING': return 'text-yellow-600 bg-yellow-50 dark:bg-yellow-950 dark:text-yellow-400'
+      case 'FAILED': return 'text-red-600 bg-red-50 dark:bg-red-950 dark:text-red-400'
       default: return 'text-gray-600 bg-gray-50'
     }
   }
 
   return (
-    <div className="flex items-center gap-4 p-4 hover:bg-gray-50 dark:hover:bg-gray-800/50 rounded-xl transition">
+    <div className="flex items-center gap-4 rounded-xl p-4 transition-all duration-200 hover:bg-gray-50 dark:hover:bg-gray-800">
       <div className={`w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 ${bg}`}>
         <Icon size={18} className={color} />
       </div>

@@ -8,19 +8,19 @@ const getNotificationStyle = (type) => {
     case "WALLET_FUNDED":
       return {
         color: "text-green-600 dark:text-green-400",
-        bg: "bg-green-50 dark:bg-green-900/20",
+        bg: "bg-green-50 dark:bg-green-950",
         icon: "💰",
       };
     case "BILL_PAYMENT_SUCCESS":
       return {
         color: "text-blue-600 dark:text-blue-400",
-        bg: "bg-blue-50 dark:bg-blue-900/20",
+        bg: "bg-blue-50 dark:bg-blue-950",
         icon: "✅",
       };
     case "BILL_PAYMENT_FAILED":
       return {
         color: "text-red-600 dark:text-red-400",
-        bg: "bg-red-50 dark:bg-red-900/20",
+        bg: "bg-red-50 dark:bg-red-950",
         icon: "❌",
       };
     default:
@@ -137,8 +137,8 @@ const Notifications = () => {
                   key={notification.id}
                   className={`flex items-start gap-4 p-4 transition ${
                     !notification.read
-                      ? "bg-green-50/50 dark:bg-green-900/10"
-                      : "hover:bg-gray-50 dark:hover:bg-gray-800/50"
+                      ? "bg-green-50 dark:bg-green-950/70"
+                      : "hover:bg-gray-50 dark:hover:bg-gray-800"
                   }`}
                 >
                   <div
@@ -168,7 +168,7 @@ const Notifications = () => {
                     {!notification.read ? (
                       <button
                         onClick={() => markAsRead(notification.id)}
-                        className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-900/20 transition"
+                        className="w-8 h-8 flex items-center justify-center rounded-lg text-gray-400 hover:text-green-600 hover:bg-green-50 dark:hover:bg-green-950 transition"
                         title="Mark as read"
                       >
                         <Check size={16} />

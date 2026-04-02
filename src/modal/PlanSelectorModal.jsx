@@ -62,7 +62,7 @@ const PlanSelectorModal = ({ isOpen, onClose, onSelect, plans, title, selectedVa
                     }}
                     className={`w-full flex items-center justify-between px-4 py-3 rounded-xl transition text-left ${
                       isSelected
-                        ? 'bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800'
+                        ? 'bg-green-50 dark:bg-green-950 border border-green-200 dark:border-green-800'
                         : 'hover:bg-gray-50 dark:hover:bg-gray-800 border border-transparent'
                     }`}
                   >

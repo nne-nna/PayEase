@@ -85,7 +85,7 @@ const ForgotPassword = () => {
             </>
           ) : (
             <div className="text-center">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center mx-auto mb-4">
                 <Mail size={28} className="text-green-600" />
               </div>
               <h2 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">

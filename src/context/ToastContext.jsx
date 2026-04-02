@@ -29,7 +29,7 @@ export const ToastProvider = ({ children }) => {
     return (
         <ToastContext.Provider value={{ toast }}>
             {children}
-            <div className="fixed top-4 right-4 z-50 flex flex-col gap-3 max-w-sm w-full">
+            <div className="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex w-full flex-col items-center gap-3 px-4 sm:inset-x-auto sm:bottom-auto sm:right-4 sm:top-4 sm:w-auto sm:items-end sm:px-0">
                 {toasts.map(t => (
                     <Toast key={t.id} toast={t} onRemove={removeToast} />
                 ))}

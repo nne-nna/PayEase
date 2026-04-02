@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import { Bell, Menu, Moon, Sun } from "lucide-react";
 
-const Navbar = ({ onMenuClick }) => {
+const Navbar = ({ isMenuOpen, onMenuClick }) => {
   const { user } = useAuth();
   const { isDark, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -20,6 +20,8 @@ const Navbar = ({ onMenuClick }) => {
         console.error("Failed to fetch notifications", err);
       }
     };
+
+    fetchUnreadCount();
   }, []);
 
   return (
@@ -32,9 +34,17 @@ const Navbar = ({ onMenuClick }) => {
       {/* Left — Mobile menu button */}
       <button
         onClick={onMenuClick}
-        className="lg:hidden text-gray-500 hover:text-gray-800 dark:text-gray-400 dark:hover:text-white"
+        aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        className={`lg:hidden flex h-10 w-10 items-center justify-center rounded-xl border transition-all duration-300 ${
+          isMenuOpen
+            ? "border-green-200 bg-green-50 text-green-600 shadow-sm dark:border-green-800 dark:bg-green-950 dark:text-green-400"
+            : "border-transparent text-gray-500 hover:border-gray-200 hover:bg-gray-100 hover:text-gray-800 dark:text-gray-400 dark:hover:border-gray-700 dark:hover:bg-gray-800 dark:hover:text-white"
+        }`}
       >
-        <Menu size={22} />
+        <Menu
+          size={22}
+          className={`transition-transform duration-300 ${isMenuOpen ? "rotate-90" : "rotate-0"}`}
+        />
       </button>
 
       {/* Page greeting */}
@@ -57,7 +67,7 @@ const Navbar = ({ onMenuClick }) => {
         {/* Theme Toggle */}
         <button
           onClick={toggleTheme}
-          className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:-translate-y-0.5"
         >
           {isDark ? <Sun size={18} /> : <Moon size={18} />}
         </button>
@@ -65,7 +75,7 @@ const Navbar = ({ onMenuClick }) => {
         {/* Notifications */}
         <button
           onClick={() => navigate("/notifications")}
-          className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+          className="relative w-9 h-9 flex items-center justify-center rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300 hover:-translate-y-0.5"
         >
           <Bell size={18} />
           {unreadCount > 0 && (
@@ -78,7 +88,7 @@ const Navbar = ({ onMenuClick }) => {
         {/* Avatar */}
         <button
           onClick={() => navigate("/profile")}
-          className="w-9 h-9 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center"
+          className="w-9 h-9 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center ring-1 ring-transparent transition-all duration-300 hover:ring-green-200 dark:hover:ring-green-900"
         >
           <span className="text-green-600 dark:text-green-400 text-sm font-semibold">
             {user?.firstName?.charAt(0)}

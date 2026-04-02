@@ -172,7 +172,7 @@ const Profile = () => {
       </div>
 
       <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800 flex items-center gap-4">
-        <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center flex-shrink-0">
+        <div className="w-16 h-16 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center flex-shrink-0">
           <span className="text-green-600 dark:text-green-400 text-2xl font-bold">
             {user?.firstName?.charAt(0)}
             {user?.lastName?.charAt(0)}

@@ -375,7 +375,7 @@ const BillPayment = () => {
 
           {fundingStatus === "waiting" && (
             <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-900/30 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-yellow-100 dark:bg-yellow-950 rounded-full flex items-center justify-center mx-auto">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-yellow-500" />
               </div>
               <div>
@@ -398,7 +398,7 @@ const BillPayment = () => {
 
           {fundingStatus === "success" && (
             <div className="text-center py-8 space-y-4">
-              <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
+              <div className="w-16 h-16 bg-green-100 dark:bg-green-950 rounded-full flex items-center justify-center mx-auto">
                 <span className="text-3xl">✅</span>
               </div>
               <p className="font-semibold text-green-600 dark:text-green-400">
@@ -462,7 +462,7 @@ const BillPayment = () => {
                   <span>Processing payment...</span>
                 </div>
                 <span className="text-xs text-white/70">
-                  This may take a few seconds
+                  Transactions may take up to a minute in test mode
                 </span>
               </div>
             ) : (
@@ -718,7 +718,7 @@ const BillPayment = () => {
                 }}
                 className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all text-left ${
                   activeCategory === cat.id
-                    ? "bg-green-50 dark:bg-green-900/20 text-green-600 dark:text-green-400"
+                    ? "bg-green-50 dark:bg-green-950 text-green-600 dark:text-green-400"
                     : "text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-800"
                 }`}
               >

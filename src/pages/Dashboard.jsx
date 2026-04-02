@@ -174,7 +174,7 @@ const Dashboard = () => {
           {/* Total Spent */}
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 bg-red-50 dark:bg-red-900/20 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-red-50 dark:bg-red-950 rounded-xl flex items-center justify-center">
                 <ArrowUpRight size={20} className="text-red-500" />
               </div>
               <TrendingUp size={16} className="text-gray-400" />
@@ -193,7 +193,7 @@ const Dashboard = () => {
           {/* Total Funded */}
           <div className="bg-white dark:bg-gray-900 rounded-2xl p-6 border border-gray-100 dark:border-gray-800">
             <div className="flex items-center justify-between mb-4">
-              <div className="w-10 h-10 bg-green-50 dark:bg-green-900/20 rounded-xl flex items-center justify-center">
+              <div className="w-10 h-10 bg-green-50 dark:bg-green-950 rounded-xl flex items-center justify-center">
                 <ArrowDownLeft size={20} className="text-green-500" />
               </div>
               <TrendingUp size={16} className="text-gray-400" />

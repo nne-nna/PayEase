@@ -39,15 +39,15 @@ const TestModeBanner = () => {
   const [expanded, setExpanded] = useState(false)
 
   return (
-    <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-2xl overflow-hidden">
+    <div className="bg-blue-50 dark:bg-blue-950 border border-blue-200 dark:border-blue-800 rounded-2xl overflow-hidden">
 
       {/* Header */}
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between p-4 text-left"
+        className="w-full flex items-center justify-between p-4 text-left transition-colors duration-300 hover:bg-blue-100/70 dark:hover:bg-blue-900/70"
       >
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/40 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-blue-100 dark:bg-blue-900/70 rounded-lg flex items-center justify-center">
             <Info size={16} className="text-blue-600 dark:text-blue-400" />
           </div>
           <div>
@@ -67,7 +67,7 @@ const TestModeBanner = () => {
 
       {/* Expandable content */}
       {expanded && (
-        <div className="px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border-t border-blue-200 dark:border-blue-800 pt-4">
+        <div className="animate-fade-in px-4 pb-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 border-t border-blue-200 dark:border-blue-800 pt-4">
           {testData.map((section) => (
             <div key={section.category}>
               <p className="text-xs font-semibold text-blue-700 dark:text-blue-300 mb-2">
@@ -80,7 +80,7 @@ const TestModeBanner = () => {
                       {item.label}
                     </span>
                     <code
-                      className="text-xs bg-blue-100 dark:bg-blue-900/40 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded font-mono cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-800 transition"
+                      className="text-xs bg-blue-100 dark:bg-blue-900/70 text-blue-800 dark:text-blue-200 px-2 py-0.5 rounded font-mono cursor-pointer hover:bg-blue-200 dark:hover:bg-blue-800 transition"
                       onClick={() => {
                         navigator.clipboard.writeText(item.value)
                       }}
