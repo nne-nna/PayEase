@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import useAuth from '../hooks/useAuth'
 import useToast from '../hooks/useToast'
 import api from '../api/axios'
+import { getApiErrorDetails } from '../utils/apiErrors'
 import { Eye, EyeClosed, HandCoins } from 'lucide-react'
 import AuthLeftPanel from '../components/AuthLeftPanel'
 
@@ -115,9 +116,12 @@ const Register = () => {
   const [loading, setLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+  const [fieldErrors, setFieldErrors] = useState({})
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+    setFieldErrors((prev) => ({ ...prev, [name]: undefined }))
   }
 
   const allRulesPassed = passwordRules.every((rule) =>
@@ -151,9 +155,11 @@ const Register = () => {
     }
 
     setLoading(true)
+    setFieldErrors({})
 
     try {
-      const { confirmPassword, ...registerData } = formData
+      const registerData = { ...formData }
+      delete registerData.confirmPassword
       const response = await api.post('/auth/register', registerData)
       const { token, email, firstName, lastName } = response.data
 
@@ -161,13 +167,12 @@ const Register = () => {
       toast.success(`Welcome to PayEase, ${firstName}! 🎉`)
       setTimeout(() => navigate('/dashboard'), 1500)
     } catch (err) {
-      const errorData = err.response?.data
-      if (typeof errorData === 'object' && errorData !== null) {
-        const firstError = Object.values(errorData)[0]
-        toast.error(firstError || 'Registration failed')
-      } else {
-        toast.error(errorData?.message || 'Registration failed. Please try again.')
-      }
+      const { message, errors } = getApiErrorDetails(
+        err,
+        'Registration failed. Please try again.'
+      )
+      setFieldErrors(errors)
+      toast.error(message)
     } finally {
       setLoading(false)
     }
@@ -266,8 +271,17 @@ const Register = () => {
                 onChange={handleChange}
                 placeholder="08012345678"
                 required
-                className="w-full px-4 py-3 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition"
+                className={`w-full px-4 py-3 rounded-lg border bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition ${
+                  fieldErrors.phone
+                    ? 'border-red-400 dark:border-red-600'
+                    : 'border-gray-200 dark:border-gray-700'
+                }`}
               />
+              {fieldErrors.phone && (
+                <p className="text-red-500 dark:text-red-400 text-xs mt-1.5">
+                  {fieldErrors.phone}
+                </p>
+              )}
             </div>
 
             {/* Password */}

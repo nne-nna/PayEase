@@ -4,6 +4,7 @@ import { HandCoins, ArrowLeft, Mail } from 'lucide-react'
 import api from '../api/axios'
 import useToast from '../hooks/useToast'
 import AuthLeftPanel from '../components/AuthLeftPanel'
+import { getApiErrorMessage } from '../utils/apiErrors'
 
 const ForgotPassword = () => {
   const toast = useToast()
@@ -19,7 +20,7 @@ const ForgotPassword = () => {
       setSent(true)
       toast.success('Reset link sent! Check your email.')
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Something went wrong')
+      toast.error(getApiErrorMessage(err, 'Something went wrong'))
     } finally {
       setLoading(false)
     }

@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import useAuth from "../hooks/useAuth";
 import useToast from "../hooks/useToast";
 import api from "../api/axios";
+import { getApiErrorMessage } from "../utils/apiErrors";
 import { Eye, EyeClosed, EyeOff, HandCoins } from "lucide-react";
 import AuthLeftPanel from "../components/AuthLeftPanel";
 
@@ -34,9 +35,7 @@ const Login = () => {
       toast.success(`Welcome back, ${firstName}! 👋`);
       setTimeout(() => navigate("/dashboard"), 1500);
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Login failed. Please try again.",
-      );
+      toast.error(getApiErrorMessage(err, "Login failed. Please try again."));
     } finally {
       setLoading(false);
     }

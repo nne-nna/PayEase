@@ -4,6 +4,10 @@ import { Zap, Phone, Wifi, Tv, Wallet, ChevronDown } from "lucide-react";
 import api from "../api/axios";
 import useToast from "../hooks/useToast";
 import { SuccessModal } from "../modal/SuccessModal";
+import {
+  getApiErrorMessage,
+  isValidReference,
+} from "../utils/apiErrors";
 import { electricityProviders } from "../providers/ElectricityProviders";
 import { airtimeProviders } from "../providers/AirtimeProviders";
 import { dataProviders, dataVariations } from "../providers/DataProviders";
@@ -155,6 +159,15 @@ const BillPayment = () => {
 
     const paystackRef = searchParams.get("reference");
     if (paystackRef) {
+      if (!isValidReference(paystackRef)) {
+        toast.error("Invalid payment reference");
+        setSearchParams((prev) => {
+          prev.delete("reference");
+          prev.delete("action");
+          return prev;
+        });
+        return;
+      }
       setActiveCategory("fund");
       setFundingStatus("waiting");
       setSearchParams((prev) => {
@@ -170,7 +183,7 @@ const BillPayment = () => {
     try {
       const response = await api.get("/wallet/balance");
       setWalletBalance(response.data.balance);
-    } catch (err) {
+    } catch {
       console.error("Failed to fetch balance");
     }
   };
@@ -219,6 +232,12 @@ const BillPayment = () => {
 
   // Auto-verify for Paystack redirect
   const autoVerify = async (reference) => {
+    if (!isValidReference(reference)) {
+      toast.error("Invalid payment reference");
+      setFundingStatus("idle");
+      return;
+    }
+
     try {
       await api.get(`/wallet/verify/${reference}`);
       setFundingStatus("success");
@@ -229,7 +248,7 @@ const BillPayment = () => {
         setFundAmount("");
       }, 3000);
     } catch (err) {
-      toast.error("Failed to verify payment");
+      toast.error(getApiErrorMessage(err, "Failed to verify payment"));
       setFundingStatus("idle");
     } finally {
       const url = new URL(window.location.href);
@@ -255,9 +274,7 @@ const BillPayment = () => {
       });
       window.location.href = response.data.authorizationUrl;
     } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Failed to initialize payment",
-      );
+      toast.error(getApiErrorMessage(err, "Failed to initialize payment"));
       setLoading(false);
     }
   };
@@ -273,8 +290,7 @@ const BillPayment = () => {
       fetchWalletBalance();
     } catch (err) {
       toast.error(
-        err.response?.data?.message ||
-          "Payment not confirmed yet. Please try again.",
+        getApiErrorMessage(err, "Payment not confirmed yet. Please try again."),
       );
     } finally {
       setVerifying(false);
@@ -334,7 +350,7 @@ const BillPayment = () => {
         phone: "",
       });
     } catch (err) {
-      toast.error(err.response?.data?.message || "Payment failed");
+      toast.error(getApiErrorMessage(err, "Payment failed"));
     } finally {
       setLoading(false);
     }

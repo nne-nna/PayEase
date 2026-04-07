@@ -4,6 +4,7 @@ import { HandCoins, Eye, EyeClosed, ArrowLeft } from 'lucide-react'
 import api from '../api/axios'
 import useToast from '../hooks/useToast'
 import AuthLeftPanel from '../components/AuthLeftPanel'
+import { getApiErrorMessage } from '../utils/apiErrors'
 
 const passwordRules = [
   { id: 'length', label: 'At least 8 characters', test: (p) => p.length >= 8 },
@@ -64,7 +65,7 @@ const ResetPassword = () => {
       toast.success('Password reset successfully!')
       setTimeout(() => navigate('/login'), 1500)
     } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to reset password')
+      toast.error(getApiErrorMessage(err, 'Failed to reset password'))
     } finally {
       setLoading(false)
     }

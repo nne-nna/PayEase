@@ -3,6 +3,7 @@ import { User, Lock, Save, Eye, EyeClosed } from "lucide-react";
 import api from "../api/axios";
 import useAuth from "../hooks/useAuth";
 import useToast from "../hooks/useToast";
+import { getApiErrorDetails, getApiErrorMessage } from "../utils/apiErrors";
 
 const passwordRules = [
   { id: "length", label: "At least 8 characters", test: (p) => p.length >= 8 },
@@ -24,15 +25,22 @@ const passwordRules = [
   },
 ];
 
-const InputField = ({ label, ...props }) => (
+const InputField = ({ label, error, ...props }) => (
   <div>
     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
       {label}
     </label>
     <input
       {...props}
-      className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition disabled:opacity-60"
+      className={`w-full px-4 py-3 rounded-xl border bg-gray-50 dark:bg-gray-800 text-gray-800 dark:text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition disabled:opacity-60 ${
+        error
+          ? "border-red-400 dark:border-red-600"
+          : "border-gray-200 dark:border-gray-700"
+      }`}
     />
+    {error ? (
+      <p className="text-red-500 dark:text-red-400 text-xs mt-1.5">{error}</p>
+    ) : null}
   </div>
 );
 
@@ -53,6 +61,7 @@ const Profile = () => {
     lastName: "",
     phone: "",
   });
+  const [profileErrors, setProfileErrors] = useState({});
 
   const [passwordForm, setPasswordForm] = useState({
     currentPassword: "",
@@ -88,6 +97,7 @@ const Profile = () => {
   const handleProfileSubmit = async (e) => {
     e.preventDefault();
     setProfileLoading(true);
+    setProfileErrors({});
 
     try {
       const payload = {};
@@ -121,7 +131,12 @@ const Profile = () => {
       login({ firstName, lastName, email }, token);
       toast.success("Profile updated successfully");
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to update profile");
+      const { message, errors } = getApiErrorDetails(
+        err,
+        "Failed to update profile",
+      );
+      setProfileErrors(errors);
+      toast.error(message);
     } finally {
       setProfileLoading(false);
     }
@@ -154,7 +169,7 @@ const Profile = () => {
         confirmPassword: "",
       });
     } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to change password");
+      toast.error(getApiErrorMessage(err, "Failed to change password"));
     } finally {
       setPasswordLoading(false);
     }
@@ -224,16 +239,24 @@ const Profile = () => {
                 type="text"
                 value={profileForm.firstName}
                 onChange={(e) =>
-                  setProfileForm({ ...profileForm, firstName: e.target.value })
+                  {
+                    setProfileForm({ ...profileForm, firstName: e.target.value });
+                    setProfileErrors((prev) => ({ ...prev, firstName: undefined }));
+                  }
                 }
+                error={profileErrors.firstName}
               />
               <InputField
                 label="Last Name"
                 type="text"
                 value={profileForm.lastName}
                 onChange={(e) =>
-                  setProfileForm({ ...profileForm, lastName: e.target.value })
+                  {
+                    setProfileForm({ ...profileForm, lastName: e.target.value });
+                    setProfileErrors((prev) => ({ ...prev, lastName: undefined }));
+                  }
                 }
+                error={profileErrors.lastName}
               />
             </div>
 
@@ -249,8 +272,12 @@ const Profile = () => {
               type="tel"
               value={profileForm.phone}
               onChange={(e) =>
-                setProfileForm({ ...profileForm, phone: e.target.value })
+                {
+                  setProfileForm({ ...profileForm, phone: e.target.value });
+                  setProfileErrors((prev) => ({ ...prev, phone: undefined }));
+                }
               }
+              error={profileErrors.phone}
             />
             <button
               type="submit"
