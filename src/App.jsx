@@ -15,6 +15,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import PublicRoute from "./components/PublicRoute";
 import Analytics from "./pages/Analytics";
+import LandingPage from "./pages/LandingPage";
 
 const ProtectedLayout = ({ children }) => (
   <ProtectedRoute>
@@ -29,6 +30,7 @@ function App() {
         <ThemeProvider>
           <AuthProvider>
             <Routes>
+              <Route path="/" element={<PublicRoute><LandingPage /></PublicRoute>} />
               <Route path="/login" element={
                 <PublicRoute><Login /></PublicRoute>
               } />
@@ -59,8 +61,7 @@ function App() {
               <Route path="/profile" element={
                 <ProtectedLayout><Profile /></ProtectedLayout>
               } />
-              <Route path="/" element={<Navigate to="/login" replace />} />
-              <Route path="*" element={<Navigate to="/login" replace />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </AuthProvider>
         </ThemeProvider>
