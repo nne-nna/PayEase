@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: 'http://16.171.43.59:8080/api/v1',
+  baseURL: 'https://duckdns.org',
   //   baseURL: 'http://localhost:8080/api/v1',
   headers: {
     'Content-Type': 'application/json',
